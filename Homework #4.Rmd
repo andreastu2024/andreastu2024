@@ -1,0 +1,91 @@
+---
+title: "Homework #4-"
+author: "Andrea Astudillo"
+date: "2024-10-11"
+output: html_document
+---
+
+```{r}
+library(fpp)
+library(fpp2)
+library(TTR)
+
+Tesla.Model.3 <- read.csv(file.choose())
+Tesla.Model.Y <- read.csv(file.choose())
+sales3=(Tesla.Model.3)
+salesY=(Tesla.Model.Y)
+class(sales3)
+class(salesY)
+
+#Model 3
+sales3$Sales.Units = as.numeric(sales3$Sales.Units)
+str(sales3)
+sales3$Model = as.factor(sales3$Model)
+str(sales3)
+sales3$Month = as.numeric(sales3$Month)
+str(sales3)
+sales3$Year = as.numeric(sales3$Year)
+str(sales3)
+ts_sales3 = ts(sales3$Sales.Units,start = c(2017,9), frequency = 12)
+str(ts_sales3)
+
+acf(ts_sales3)
+acf(ts_sales3,lag.max = 50)
+head(ts_sales3)
+plot(ts_sales3)
+stl_decomp_ts_sales3 <- stl(ts_sales3,s.window ="periodic")
+plot(stl_decomp_ts_sales3)
+attributes(stl_decomp_ts_sales3)
+
+seasadj(stl_decomp_ts_sales3)
+
+plot(ts_sales3)
+stl_decomp_ts_sales3 = stl(ts_sales3,s.window ="periodic")
+lines(seasadj(stl_decomp_ts_sales3), col="red")
+
+f_stl_ts_sales3 = forecast(stl_decomp_ts_sales3)
+f_stl_ts_sales3 = forecast(stl_decomp_ts_sales3, h=15)
+f_stl_ts_sales3
+plot(f_stl_ts_sales3)
+
+decomp_ts_sales3 = decompose(ts_sales3)
+decomp_ts_sales3
+attributes(decomp_ts_sales3)
+seasadj(decomp_ts_sales3)
+
+#Model Y
+salesY$Sales.Units = as.numeric(salesY$Sales.Units)
+str(salesY)
+salesY$Model = as.factor(salesY$Model)
+str(salesY)
+salesY$Month = as.numeric(salesY$Month)
+str(salesY)
+salesY$Year = as.numeric(salesY$Year)
+str(salesY)
+ts_salesY = ts(salesY$Sales.Units,start = c(2020,7), frequency = 12)
+str(ts_salesY)
+
+acf(ts_salesY)
+acf(ts_salesY,lag.max = 50)
+head(ts_salesY)
+plot(ts_salesY)
+stl_decomp_ts_salesY = stl(ts_salesY,s.window ="periodic")
+plot(stl_decomp_ts_salesY)
+
+seasadj(stl_decomp_ts_salesY)
+
+plot(ts_salesY)
+stl_decomp_ts_salesY <- stl(ts_salesY,s.window ="periodic")
+lines(seasadj(stl_decomp_ts_salesY), col="red")
+
+f_stl_ts_salesY = forecast(stl_decomp_ts_salesY)
+f_stl_ts_salesY = forecast(stl_decomp_ts_salesY, h=15)
+f_stl_ts_salesY
+plot(f_stl_ts_salesY)
+
+decomp_ts_salesY = decompose(ts_salesY)
+decomp_ts_salesY
+attributes(decomp_ts_salesY)
+seasadj(decomp_ts_salesY)
+```
+
